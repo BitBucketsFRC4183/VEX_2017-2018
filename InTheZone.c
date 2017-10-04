@@ -38,25 +38,25 @@
 
 void pre_auton()
 {
-  // Set bStopTasksBetweenModes to false if you want to keep user created tasks
-  // running between Autonomous and Driver controlled modes. You will need to
-  // manage all user created tasks if set to false.
-  bStopTasksBetweenModes = true;
+	// Set bStopTasksBetweenModes to false if you want to keep user created tasks
+	// running between Autonomous and Driver controlled modes. You will need to
+	// manage all user created tasks if set to false.
+	bStopTasksBetweenModes = true;
 
 	// Set bDisplayCompetitionStatusOnLcd to false if you don't want the LCD
 	// used by the competition include file, for example, you might want
 	// to display your team name on the LCD in this function.
 	// bDisplayCompetitionStatusOnLcd = false;
 
-  // All activities that occur before the competition starts
-  // Example: clearing encoders, setting servo positions, ...
+	// All activities that occur before the competition starts
+	// Example: clearing encoders, setting servo positions, ...
 
-  /// MOK: Add motor slaves here and pass only the master motor ID to
-  /// and interface for each subsystem control loop or state machine
-  /// http://help.robotc.net/WebHelpVEX/index.htm#Resources/topics/VEX_Cortex/ROBOTC/IME_Commands/slaveMotor.htm
-  slaveMotor(Left, LeftWithEnc);
-  slaveMotor(Right, RightWithEnc);
-  initializeDriveMotors(LeftWithEnc, RightWithEnc);
+	/// MOK: Add motor slaves here and pass only the master motor ID to
+	/// and interface for each subsystem control loop or state machine
+	/// http://help.robotc.net/WebHelpVEX/index.htm#Resources/topics/VEX_Cortex/ROBOTC/IME_Commands/slaveMotor.htm
+	slaveMotor(Left, LeftWithEnc);
+	slaveMotor(Right, RightWithEnc);
+	initializeDriveMotors(LeftWithEnc, RightWithEnc);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -71,12 +71,12 @@ void pre_auton()
 
 task autonomous()
 {
-  // ..........................................................................
-  // Insert user code here.
-  // ..........................................................................
+	// ..........................................................................
+	// Insert user code here.
+	// ..........................................................................
 
-  // Remove this function call once you have "real" code.
-  AutonomousCodePlaceholderForTesting();
+	// Remove this function call once you have "real" code.
+	AutonomousCodePlaceholderForTesting();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -91,25 +91,25 @@ task autonomous()
 
 task usercontrol()
 {
-  // User control code here, inside the loop
+	// User control code here, inside the loop
 
 	// We will treat this user control task as the lowest priority
 	// thing in the system
-  short userControlPriority = getTaskPriority(usercontrol);
+	short userControlPriority = getTaskPriority(usercontrol);
 
-  // In RobotC, higher number is higher priority (reversed from popular RTOSes)
-  // Make sure our control loop tasks always have high priority than user polling
-  // and other background activity
-  startTask(driveControlTask, userControlPriority + 1);
+	// In RobotC, higher number is higher priority (reversed from popular RTOSes)
+	// Make sure our control loop tasks always have high priority than user polling
+	// and other background activity
+	startTask(driveControlTask, userControlPriority + 1);
 
-  // Don't stop the usercontrol task, just loop forever
-  // displaying status and time... this is our low priority
-  // status loop
-  for EVER
-  {
-  	  displayStatusAndTime();
+	// Don't stop the usercontrol task, just loop forever
+	// displaying status and time... this is our low priority
+	// status loop
+	for EVER
+	{
+		displayStatusAndTime();
 
-  	  // There is no need to run this more than once per second
-			wait1Msec(1000);
-  }
+		// There is no need to run this more than once per second
+		wait1Msec(1000);
+	}
 }
