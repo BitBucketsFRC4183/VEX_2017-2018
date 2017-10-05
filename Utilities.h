@@ -2,6 +2,7 @@
 #define UTILITIES_H
 
 #define EVER (;;)
+#define DIM(x) (sizeof(x)/sizeof(x[0]))
 
 float max(float x, float y)
 {

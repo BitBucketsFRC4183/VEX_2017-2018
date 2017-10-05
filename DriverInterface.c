@@ -37,21 +37,6 @@ void initializeDriveMotors(tMotor leftMasterId, tMotor rightMasterId)
 	driveMotors.rightId = rightMasterId;
 }
 
-// Create functions to make fetching the drive and turn commands
-// easier to understand when used.
-// Later we can add code to fetch information from other sources
-// like an autonmous (fake) joystick... or we could just change
-// the motor command source in the driveControlTask, further down.
-int getDriveCommand()
-{
-	return vexRT[DRIVE_AXIS];
-}
-
-int getTurnCommand()
-{
-	return vexRT[TURN_AXIS];
-}
-
 // Create a driveControl task to run the user control loop
 // for driving the drive motors. Initialization and motor
 // setup should bet at the top of the task, OUTSIDE the
