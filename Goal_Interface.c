@@ -1,17 +1,10 @@
 #include "RobotMap.h"
 #include "Utilities.h"
 
-struct GoalManipMotorType{
-	tMotor leftID;
-	tMotor rightID;
-};
-
-GoalManipMotorType gManipMotors;
+tMotor gManipID;
 
 void initializeGoalManipMotors(tMotor masterID){
-	gManipMotors.leftID = masterID;
-	gManipMotors.rightID;
-
+	gManipID = masterID;
 }
 
 task gManipControlTask(){
@@ -19,13 +12,14 @@ task gManipControlTask(){
 
 		float leftMotorSpeed = 0.0;
 
-		if(getGoalLifterCommand() == 1) leftMotorSpeed = 63;
-		if(getGoalLifterCommand() == -1) leftMotorSpeed = -63;
+		if(getGoalLifterCommand() == 1) leftMotorSpeed = 0.5;
+		if(getGoalLifterCommand() == -1) leftMotorSpeed = -0.5;
 
-		int leftMotorCommand = (int)(leftMotorSpeed*MOTOR_MAX_FLOAT);
+		int gManipMotorCommand = (int)(leftMotorSpeed*MOTOR_MAX_FLOAT);
 
 
-		motor[gManipMotors.leftID] = leftMotorCommand;
-		motor[gManipMotors.rightID] = leftMotorCommand;
+		motor[gManipID] = gManipMotorCommand;
+		wait1Msec(50);
+
 	}
 }

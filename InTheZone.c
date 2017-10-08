@@ -57,6 +57,7 @@ void pre_auton()
 	/// http://help.robotc.net/WebHelpVEX/index.htm#Resources/topics/VEX_Cortex/ROBOTC/IME_Commands/slaveMotor.htm
 	slaveMotor(Left, LeftWithEnc);
 	slaveMotor(Right, RightWithEnc);
+	slaveMotor(MobileManipRight, MobleManipLeft);
 	initializeDriveMotors(LeftWithEnc, RightWithEnc);
 	initializeGoalManipMotors(MobleManipLeft);
 }
