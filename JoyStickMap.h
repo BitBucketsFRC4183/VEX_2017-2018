@@ -1,6 +1,9 @@
 #if !defined(JOYSTICK_MAP_H)
 #define JOYSTICK_MAP_H
 
+const int JOYSTICK_MAX = 127;
+const float JOYSTICK_MAX_FLOAT = (float)JOYSTICK_MAX;
+
 //Driver stuff
 
 const int DRIVER_LEFT_Y = Ch3;
