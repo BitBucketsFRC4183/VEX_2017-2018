@@ -13,7 +13,7 @@ task gManipControlTask(){
 		float leftMotorSpeed = 0.0;
 
 		if(getGoalLifterCommand() == 1) leftMotorSpeed = 0.5;
-		if(getGoalLifterCommand() == -1) leftMotorSpeed = -0.5;
+		if(getGoalLifterCommand() == -1) leftMotorSpeed = -0.7;
 
 		int gManipMotorCommand = (int)(leftMotorSpeed*MOTOR_MAX_FLOAT);
 
