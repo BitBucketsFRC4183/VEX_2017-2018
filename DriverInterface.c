@@ -98,8 +98,10 @@ task driveControlTask()
 		int leftMotorCommand = (int)(leftMotorSpeed * MOTOR_MAX_FLOAT);
 		int rightMotorCommand = (int)(rightMotorSpeed * MOTOR_MAX_FLOAT);
 
+		hogCPU();
 		motor[driveMotors.leftId] = leftMotorCommand;
 		motor[driveMotors.rightId] = rightMotorCommand;
+		releaseCPU();
 
 		// No need to run drive control faster than about 20 Hz
 		wait1Msec(50);
