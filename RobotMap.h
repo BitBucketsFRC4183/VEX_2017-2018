@@ -21,7 +21,7 @@ int getDriveCommand()
 
 int getTurnCommand()
 {
-	return vexRT[TURN_AXIS];
+	return -vexRT[TURN_AXIS]; //z axis pointing toward ground
 }
 
 int getGoalLifterCommand(){
