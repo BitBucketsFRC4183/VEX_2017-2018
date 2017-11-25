@@ -2,9 +2,7 @@
 #define ROBOTMAP_H
 
 #include "JoyStickMap.h"
-
-const int MOTOR_MAX = 127;	// These consts should probably be somewhere else (like a motor utility or map)
-const float MOTOR_MAX_FLOAT = (float)MOTOR_MAX;
+#include "MotorConstants.h"
 
 const int DRIVE_AXIS = DRIVER_LEFT_Y; //these axis match with the FRC configuration
 const int TURN_AXIS = DRIVER_RIGHT_X;
@@ -12,24 +10,45 @@ const int TURN_AXIS = DRIVER_RIGHT_X;
 const int GOAL_LIFTER_UP = OPERATOR_RIGHT_BUTTONS_U;
 const int GOAL_LIFTER_DOWN = OPERATOR_RIGHT_BUTTONS_D;
 
+const float GOAL_ENCODER_SCALE_TICKS_PER_DEG = IME_TICKS_PER_DEG;
+
 // Create functions to make fetching the drive and turn commands
-// easier to understand when used.
-int getDriveCommand()
+// easier to understand when used. In this case we will change them
+// to simply return a floating point scale from -1.0 to +1.0 to
+// allow for simpler control scaling
+float getDriveCommand()
 {
-	return vexRT[DRIVE_AXIS];
+	return vexRT[DRIVE_AXIS] / JOYSTICK_MAX_FLOAT;
 }
 
-int getTurnCommand()
+float getTurnCommand()
 {
-	return -vexRT[TURN_AXIS]; //z axis pointing toward ground
+	return -vexRT[TURN_AXIS] / JOYSTICK_MAX_FLOAT; //z axis pointing toward ground
 }
 
-int getGoalLifterCommand(){
-	int result = 0;
+enum GoalCommand
+{
+	GOAL_UP,
+	GOAL_CENTER,
+	GOAL_DOWN
+};
+GoalCommand getGoalLifterCommand()
+{
+	GoalCommand result = GOAL_CENTER;	// Default to neither up or down
 
-	if(vexRT[GOAL_LIFTER_UP]^vexRT[GOAL_LIFTER_DOWN]){
-		if(vexRT[GOAL_LIFTER_UP]) result = 1;
-		else result = -1;
+	// Up and down are mutually exclusive
+	// and at least one must be pressed
+	if(vexRT[GOAL_LIFTER_UP]^vexRT[GOAL_LIFTER_DOWN])
+	{
+		// If not up it must be down
+		if(vexRT[GOAL_LIFTER_UP])
+	  {
+	  	result = GOAL_UP;
+	  }
+		else
+		{
+			result = GOAL_DOWN;
+		}
 	}
 
 	return result;

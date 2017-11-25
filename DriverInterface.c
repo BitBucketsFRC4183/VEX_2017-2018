@@ -16,6 +16,7 @@
 
 #include "RobotMap.h"
 #include "Utilities.h"
+#include "MotorConstants.h"
 
 // Create two "member-like" variables here to represent the
 // master motor IDs for the left and right motors.
@@ -54,9 +55,9 @@ task driveControlTask()
 {
 	for EVER
 	{
-		// Read the inputs and convert to float so we can scale easier
-		float drive = (float)getDriveCommand() / JOYSTICK_MAX_FLOAT;
-		float turn = (float)getTurnCommand() / JOYSTICK_MAX_FLOAT;
+		// Read the inputs as normalized float so we can scale easier
+		float drive = getDriveCommand();
+		float turn = getTurnCommand();
 
 		// Scale the inputs to make the joystick easier to use
 		// There are many scaling options: square, cube, sine, logarithmic
