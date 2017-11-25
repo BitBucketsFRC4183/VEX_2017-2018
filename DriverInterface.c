@@ -31,6 +31,7 @@ struct DriveMotorType
 };
 
 DriveMotorType driveMotors;
+
 void initializeDriveMotors(tMotor leftMasterId, tMotor rightMasterId)
 {
 	driveMotors.leftId = leftMasterId;
