@@ -26,6 +26,8 @@
 #include "Vex_Competition_Includes.c"
 #include "DriverInterface.c" //equivalent to java class interaction
 #include "Goal_Interface.c"
+#include "Cone_Lifter_Interface.c"
+#include "Cone_Manipulator_Interface.c"
 #include "Utilities.h"
 
 /*---------------------------------------------------------------------------*/
@@ -60,7 +62,7 @@ void pre_auton()
 	slaveMotor(Right, RightWithEnc);
 	slaveMotor(MobileManipRight, MobileManipLeft);
 	initializeDriveMotors(LeftWithEnc, RightWithEnc);
-	initializeGoalManipMotors(MobileManipLeft);
+	initializeGoalLifterMotors(MobileManipLeft, GOAL_ENCODER_SCALE_TICKS_PER_DEG);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -105,8 +107,8 @@ task usercontrol()
 	// Make sure our control loop tasks always have high priority than user polling
 	// and other background activity
 	startTask(driveControlTask, userControlPriority + 1);
-	startTask(gManipControlTask);
-	startTask(motorControl);
+	startTask(goalLifterControlTask);
+
 	// Don't stop the usercontrol task, just loop forever
 	// displaying status and time... this is our low priority
 	// status loop

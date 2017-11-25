@@ -1,45 +1,48 @@
 #include "RobotMap.h"
 #include "Utilities.h"
 
-tMotor gManipID;
+tMotor goalLifterMotorId;
+float  goalLifterEncoderScale_ticksPerDeg = 0.0;
 
-void initializeGoalManipMotors(tMotor masterID){
-	gManipID = masterID;
-}
-
-task gManipControlTask(){
-	for(;;){
-
-		float leftMotorSpeed = 0.0;
-
-		if(getGoalLifterCommand() == 1) leftMotorSpeed = 0.5;
-		if(getGoalLifterCommand() == -1) leftMotorSpeed = -0.7;
-
-		int gManipMotorCommand = (int)(leftMotorSpeed*MOTOR_MAX_FLOAT);
-
-		motor[gManipID] = gManipMotorCommand;
-
-		wait1Msec(50);
-	}
-
-}
-long e;
-int sp;
-int sv;
-task motorControl()
+void initializeGoalLifterMotors(tMotor masterID, float encoderScale_ticksPerDeg)
 {
+	goalLifterMotorId = masterID;
+	goalLifterEncoderScale_ticksPerDeg = encoderScale_ticksPerDeg;
+}
+
+task goalLifterControlTask()
+{
+	// Variable names for clarity
+	long goalError;
+	int goalSetPoint;
+	int goalPosition;
 	for(;;)
 	{
-			if(vexRT[GOAL_LIFTER_UP]^vexRT[GOAL_LIFTER_DOWN])
-			{
-				//sets target position of goal lifter based on whether up or down joystick buttons are pressed
-				if(vexRT[GOAL_LIFTER_UP]) sp=30;
-				if(vexRT[GOAL_LIFTER_DOWN])sp=-110;
-			}
+		  switch (getGoalLifterCommand())
+		  {
+		  	case GOAL_UP:
+		  		goalSetPoint = 30;	// Should be in "real" units like degrees, inches, etc.
+		  		break;
+		  	case GOAL_DOWN:
+		  		goalSetPoint = -110;	// Should be in "real" units
+		  		break;
+		  	case GOAL_CENTER:
+		  	default:
+		  		goalSetPoint = 0;
+		  		break;
+		  }
 
-			sv=getMotorEncoder(gManipID);
-			e=sp-sv;
-			//Motor speed is proportional to the difference of the desired position and the actual position
-			Motor[gManipID]=e*127/360;
+		  // The motor encoder return value depends on the type of encoder
+		  // and the motor gear ratios. In this case we "know" that the
+		  // integrated encoder has specific scaling (see MotorConstants.h)
+			goalPosition = getMotorEncoder(goalLifterMotorId);
+			goalError = goalSetPoint - goalPosition;
+
+			// Motor speed is proportional to the difference of the desired position and the actual position
+			// The scale is chosen to
+			motor[goalLifterMotorId] = goalError * 127/360;
+
+			// Delay before running again
+			wait1Msec(50);	// 20 Hz should be enough 1/20 = 50 msec
 	}
 }
