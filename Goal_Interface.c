@@ -52,7 +52,7 @@ task goalLifterControlTask()
 				commandValue = -MOTOR_MAX_FLOAT;
 			}
 
-			motor[goalLifterMotorId] = (int)-commandValue;
+			motor[goalLifterMotorId] = (int)commandValue;
 
 			// Delay before running again
 			wait1Msec(20);	// 50 Hz should be enough 1/50 = 20 msec
