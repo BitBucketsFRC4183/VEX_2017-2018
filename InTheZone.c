@@ -63,6 +63,7 @@ void pre_auton()
 	slaveMotor(MobileManipRight, MobileManipLeft);
 	initializeDriveMotors(LeftWithEnc, RightWithEnc);
 	initializeGoalLifterMotors(MobileManipLeft, GOAL_ENCODER_SCALE_TICKS_PER_DEG);
+	//initializeCLifterMotors()
 }
 
 /*---------------------------------------------------------------------------*/
@@ -108,6 +109,7 @@ task usercontrol()
 	// and other background activity
 	startTask(driveControlTask, userControlPriority + 1);
 	startTask(goalLifterControlTask);
+	startTask(cLifterControlTask);
 
 	// Don't stop the usercontrol task, just loop forever
 	// displaying status and time... this is our low priority
