@@ -72,32 +72,34 @@ task cLifterControlTask()
 	resetMotorEncoder(cLifterMotorB);
 	float cLifterErrorA;
 	float cLifterErrorB;
-	float cLifterSetPoint;
+	float cLifterSetPoint = 0.0;
 //	float cLifterSetPointB;
 	float cLifterPositionA;
 	float cLifterPositionB;
 	float maxVal=500;
-	float kA=1;
-	float kB=1;
+	float k = 2.0;
 	//float minVal;
 	for(;;)
 	{
-		cLifterSetPoint=getJoystickValue(C_LIFTER_AXIS)/127*maxVal;
-		if(getJoystickValue(C_LIFTER_AXIS)<20)
+		int j = getJoystickValue(C_LIFTER_AXIS);
+		if(abs(j)>10)
 		{
-			cLifterSetPoint=getMotorEncoder(cLifterMotorA)/cLifterEncoderScale_ticksPerDeg;
-			motor[cLifterMotorA]= kA*getJoystickValue(C_LIFTER_AXIS);
+			cLifterSetPoint=(float)getMotorEncoder(cLifterMotorA)/cLifterEncoderScale_ticksPerDeg;
+			motor[cLifterMotorA]= j;
 		}
 		else
 		{
-			cLifterPositionA=getMotorEncoder(cLifterMotorA)/cLifterEncoderScale_ticksPerDeg;
+			long enc = getMotorEncoder(cLifterMotorA);
+			cLifterPositionA=(float)enc/cLifterEncoderScale_ticksPerDeg;
 			cLifterErrorA=cLifterSetPoint-cLifterPositionA;
-			motor[cLifterMotorA]=cLifterErrorA*kA;
+			motor[cLifterMotorA]=cLifterErrorA*k;
 		}
-		cLifterPositionB=getMotorEncoder(cLifterMotorB)/cLifterEncoderScale_ticksPerDeg;
+		cLifterPositionB=(float)getMotorEncoder(cLifterMotorB)/cLifterEncoderScale_ticksPerDeg;
 		cLifterErrorB=-cLifterSetPoint-cLifterPositionB;
-		motor[cLifterMotorB]=cLifterErrorB*kB;
+		motor[cLifterMotorB]=-cLifterErrorB*k;
 	}
+
+	wait1Msec(5); // 200 Hz
 }
 /*Notes:
 1. clifteraxis was made up in the robot map, need to  determine which actual axis is being used.
