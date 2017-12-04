@@ -76,20 +76,25 @@ task cLifterControlTask()
 //	float cLifterSetPointB;
 	float cLifterPositionA;
 	float cLifterPositionB;
-	float maxVal=500;
+	float maxVal=600;
 	float k = 2.0;
-	//float minVal;
+	float minVal=-23;
 	for(;;)
 	{
 		int j = getJoystickValue(C_LIFTER_AXIS);
-		if(abs(j)>10)
+		long enc = getMotorEncoder(cLifterMotorA);
+		if(abs(j)>10&&((enc/cLifterEncoderScale_ticksPerDeg<minVal && j>0)
+			||(enc/cLifterEncoderScale_ticksPerDeg>maxVal && j<0)
+			||(enc/cLifterEncoderScale_ticksPerDeg<maxVal&&
+			enc/cLifterEncoderScale_ticksPerDeg>minVal)))
 		{
 			cLifterSetPoint=(float)getMotorEncoder(cLifterMotorA)/cLifterEncoderScale_ticksPerDeg;
-			motor[cLifterMotorA]= j;
+			motor[cLifterMotorA]=j;
 		}
 		else
 		{
-			long enc = getMotorEncoder(cLifterMotorA);
+			if(cLifterSetPoint>maxVal) cLifterSetPoint=maxVal;
+			if(cLifterSetPoint<minVal) cLifterSetPoint=minVal;
 			cLifterPositionA=(float)enc/cLifterEncoderScale_ticksPerDeg;
 			cLifterErrorA=cLifterSetPoint-cLifterPositionA;
 			motor[cLifterMotorA]=cLifterErrorA*k;
@@ -101,10 +106,3 @@ task cLifterControlTask()
 
 	wait1Msec(5); // 200 Hz
 }
-/*Notes:
-1. clifteraxis was made up in the robot map, need to  determine which actual axis is being used.
-2. what about min value
-3. what about the set point value if no joystick value
-4. joystick stuff.
-5. neg sign for mtr b
-//*/
