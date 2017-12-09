@@ -52,7 +52,24 @@ GoalCommand getGoalLifterCommand()
 	}
 
 	return result;
+}
 
+const int C_LIFTER_AXIS = OPERATOR_LEFT_Y;
+const int CONE_LIFTER_UP = OPERATOR_LEFT_BUTTONS_U;
+const int CONE_LIFTER_DOWN = OPERATOR_LEFT_BUTTONS_D;
+
+float getLiftCommand(){
+	return vexRT[C_LIFTER_AXIS] / JOYSTICK_MAX_FLOAT;
+
+/*	if(vexRT[CONE_LIFTER_UP]^vexRT[CONE_LIFTER_DOWN]){
+
+		if(vexRT[CONE_LIFTER_UP]){
+			result = C_LIFTER_UP;
+		}
+		else{
+			result = C_LIFTER_DOWN;
+		}
+	}*/
 }
 
 #endif // ROBOTMAP_H
