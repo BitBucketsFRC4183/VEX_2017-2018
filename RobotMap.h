@@ -18,12 +18,12 @@ const float GOAL_ENCODER_SCALE_TICKS_PER_DEG = IME_TICKS_PER_DEG;
 // allow for simpler control scaling
 float getDriveCommand()
 {
-	return vexRT[DRIVE_AXIS] / JOYSTICK_MAX_FLOAT;
+	return (float)(vexRT[DRIVE_AXIS]) / JOYSTICK_MAX_FLOAT;
 }
 
 float getTurnCommand()
 {
-	return -vexRT[TURN_AXIS] / JOYSTICK_MAX_FLOAT; //z axis pointing toward ground
+	return (float)(-vexRT[TURN_AXIS]) / JOYSTICK_MAX_FLOAT; //z axis pointing toward ground
 }
 
 enum GoalCommand
