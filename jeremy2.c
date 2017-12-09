@@ -72,7 +72,7 @@ void pre_auton()
 /*---------------------------------------------------------------------------*/
 task PosArmControl()
 {
-	float setPoint=270.0;
+	float setPoint=270.0 * 7.0;
 	float position=0.0;
 	float k=2.0;
 	float minVal=0;
@@ -88,7 +88,7 @@ task PosArmControl()
 
 		long enc = getMotorEncoder(arm);
 
-		if( (abs(joy)>20)
+		if( (abs(joy)>10)
 		&&
 			 (((setPoint >= maxVal) && (joy<0))
 		||  ((setPoint <= minVal) && (joy>0))
