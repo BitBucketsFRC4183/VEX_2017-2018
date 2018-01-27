@@ -72,18 +72,18 @@ void pre_auton()
 /*---------------------------------------------------------------------------*/
 task PosArmControl()
 {
-	float setPoint=270.0 * 7.0;
+	float setPoint=210.0 * 7.0;
 	float position=0.0;
 	float k=2.0;
 	float minVal=0;
-	float maxVal=270.0 * 7.0;
+	float maxVal=250.0 * 7.0;
 	float error=0.0;
 
 
 	for(;;)
 	{
 		float joyFloat = (float)getJoystickValue(Ch2Xmtr2) / 127.0;
-		joyFloat *= fabs(joyFloat);
+		joyFloat *= (joyFloat)*joyFloat;
 		int joy = (int)(joyFloat * 127.0);
 
 		long enc = getMotorEncoder(arm);
@@ -199,8 +199,8 @@ task usercontrol()
 		  float turnFloat = (float)turn / 127.0;
 
 		  // Square but keep sign
-		  driveFloat *= fabs(driveFloat);
-		  turnFloat *= fabs(turnFloat);
+		  driveFloat *= (driveFloat)*driveFloat;
+		  turnFloat *= (turnFloat)*turnFloat;
 
 			// Now we just implement the arcade logic (similar to the WPI library
 			// used on the FRC robot)
